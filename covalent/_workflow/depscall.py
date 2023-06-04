@@ -74,10 +74,7 @@ class DepsCall(Deps):
         """Return a JSON-serializable dictionary representation of self"""
         attributes = self.__dict__.copy()
         for k, v in attributes.items():
-            if isinstance(v, TransportableObject):
-                attributes[k] = v.to_dict()
-            else:
-                attributes[k] = v
+            attributes[k] = v.to_dict() if isinstance(v, TransportableObject) else v
         return {"type": "DepsCall", "short_name": self.short_name(), "attributes": attributes}
 
     def from_dict(self, object_dict) -> "DepsCall":

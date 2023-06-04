@@ -47,11 +47,7 @@ class DepsBash(Deps):
     """
 
     def __init__(self, commands: Union[List, str] = []):
-        if isinstance(commands, str):
-            self.commands = [commands]
-        else:
-            self.commands = commands
-
+        self.commands = [commands] if isinstance(commands, str) else commands
         super().__init__(apply_fn=apply_bash_commands, apply_args=[self.commands])
 
     def to_dict(self) -> dict:

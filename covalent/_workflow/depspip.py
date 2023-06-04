@@ -57,11 +57,7 @@ class DepsPip(Deps):
     """
 
     def __init__(self, packages: Union[List, str] = [], reqs_path: str = ""):
-        if isinstance(packages, str):
-            self.packages = [packages]
-        else:
-            self.packages = packages
-
+        self.packages = [packages] if isinstance(packages, str) else packages
         self.reqs_path = reqs_path
         self.requirements_content = ""
 

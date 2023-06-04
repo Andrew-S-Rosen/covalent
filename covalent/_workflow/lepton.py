@@ -151,7 +151,7 @@ class Lepton(Electron):
 
         if isinstance(deps_bash, DepsBash):
             deps["bash"] = deps_bash
-        if isinstance(deps_bash, list) or isinstance(deps_bash, str):
+        if isinstance(deps_bash, (list, str)):
             deps["bash"] = DepsBash(commands=deps_bash)
 
         if isinstance(deps_pip, DepsPip):
@@ -425,7 +425,7 @@ def bash(
 
     if isinstance(deps_bash, DepsBash):
         deps["bash"] = deps_bash
-    if isinstance(deps_bash, list) or isinstance(deps_bash, str):
+    if isinstance(deps_bash, (list, str)):
         deps["bash"] = DepsBash(commands=deps_bash)
 
     if isinstance(deps_pip, DepsPip):
@@ -459,7 +459,4 @@ def bash(
 
         return wrapper
 
-    if _func is None:
-        return decorator_bash_lepton
-    else:
-        return decorator_bash_lepton(_func)
+    return decorator_bash_lepton if _func is None else decorator_bash_lepton(_func)
