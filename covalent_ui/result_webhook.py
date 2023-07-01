@@ -93,7 +93,7 @@ def send_draw_request(lattice) -> None:
                     "function_string": lattice.workflow_function_string,
                     "doc": lattice.__doc__,
                     "name": lattice.__name__,
-                    "inputs": encode_dict({**named_args, **named_kwargs}),
+                    "inputs": encode_dict(named_args | named_kwargs),
                     "metadata": extract_metadata(lattice.metadata),
                 },
                 "graph": extract_graph(graph),

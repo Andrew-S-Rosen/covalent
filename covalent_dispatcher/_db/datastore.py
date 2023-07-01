@@ -82,14 +82,12 @@ class DataStore:
             migration_ctx = MigrationContext.configure(
                 self.engine.connect(), environment_context=env_ctx
             )
-            current_rev = migration_ctx.get_current_revision()
-            return current_rev
+            return migration_ctx.get_current_revision()
 
     def current_head(self):
         alembic_config = self.get_alembic_config(logging_enabled=False)
         script = ScriptDirectory.from_config(alembic_config)
-        current_head = script.get_current_head()
-        return current_head
+        return script.get_current_head()
 
     @property
     def is_migration_pending(self):

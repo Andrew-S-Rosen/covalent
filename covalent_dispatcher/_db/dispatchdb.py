@@ -105,9 +105,7 @@ def extract_metadata(metadata: dict):
 
 def encode_dict(d):
     """Avoid JSON encoding when python str() suffices"""
-    if not isinstance(d, dict):
-        return d
-    return {k: str(v) for (k, v) in d.items()}
+    return d if not isinstance(d, dict) else {k: str(v) for (k, v) in d.items()}
 
 
 def extract_graph(graph):
@@ -122,9 +120,7 @@ def extract_graph(graph):
 def result_encoder(obj):
     if isinstance(obj, Status):
         return obj.STATUS
-    if isinstance(obj, datetime):
-        return obj.isoformat()
-    return str(obj)
+    return obj.isoformat() if isinstance(obj, datetime) else str(obj)
 
 
 def encode_result(result_obj):
@@ -148,15 +144,13 @@ def encode_result(result_obj):
             "function_string": lattice.workflow_function_string,
             "doc": lattice.__doc__,
             "name": lattice.__name__,
-            "inputs": encode_dict({**named_args, **named_kwargs}),
+            "inputs": encode_dict(named_args | named_kwargs),
             "metadata": extract_metadata(lattice.metadata),
         },
         "graph": extract_graph(result_obj.lattice.transport_graph._graph),
     }
 
-    jsonified_result = simplejson.dumps(result_dict, default=result_encoder, ignore_nan=True)
-
-    return jsonified_result
+    return simplejson.dumps(result_dict, default=result_encoder, ignore_nan=True)
 
 
 class DispatchDB:
@@ -165,10 +159,7 @@ class DispatchDB:
     """
 
     def __init__(self, dbpath: str = None) -> None:
-        if dbpath:
-            self._dbpath = dbpath
-        else:
-            self._dbpath = get_config("user_interface.dispatch_db")
+        self._dbpath = dbpath if dbpath else get_config("user_interface.dispatch_db")
 
     def __enter__(self):
         return self

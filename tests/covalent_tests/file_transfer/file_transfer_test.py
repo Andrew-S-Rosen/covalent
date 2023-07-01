@@ -65,7 +65,7 @@ class TestFileTransfer:
             mock_strategy.cp.assert_called_once()
         elif is_from_file_remote and not is_to_file_remote:
             mock_strategy.download.assert_called_once()
-        elif not is_from_file_remote and is_to_file_remote:
+        elif not is_from_file_remote:
             mock_strategy.upload.assert_called_once()
 
     def test_transfer_from_remote(self):
